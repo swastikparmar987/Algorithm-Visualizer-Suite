@@ -15,7 +15,10 @@ class AlgorithmVisualizerApp:
         
         self.current_frame = None
         self.loading = False  # Prevent multiple clicks
-        self.is_fullscreen = False
+        self.is_fullscreen = True  # Start in fullscreen
+        
+        # Set fullscreen mode
+        self.app.attributes('-fullscreen', True)
         
         # Register theme change callback
         ThemeManager.register_callback(self.on_theme_change)
