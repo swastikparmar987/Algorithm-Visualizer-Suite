@@ -22,87 +22,28 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install customtkinter pillow
         pip install pyinstaller
     
     - name: Build Windows executable
       run: |
-        pyinstaller --clean Algorithm_Visualizer_Windows.spec
+        pyinstaller --noconfirm --onefile --windowed --name "AlgorithmVisualizer" --icon "icon.png" --add-data "utils.py;." --add-data "sorting_visualizer_embedded.py;." --add-data "searching_visualizer_embedded.py;." --add-data "graph_visualizer_embedded.py;." --add-data "tree_visualizer_embedded.py;." --add-data "maze_visualizer_embedded.py;." --add-data "data_structures_visualizer_embedded.py;." --add-data "algorithm_info.py;." --add-data "info_panel.py;." --add-data "README.md;." --add-data "USER_GUIDE.py;." main_menu.py
     
     - name: Upload Windows executable
       uses: actions/upload-artifact@v3
       with:
         name: AlgorithmVisualizer-Windows
         path: dist/AlgorithmVisualizer.exe
-        retention-days: 30
-
-  build-macos:
-    runs-on: macos-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install pyinstaller
-    
-    - name: Build macOS app
-      run: |
-        pyinstaller --clean Algorithm_Visualizer_macOS.spec
-    
-    - name: Create DMG
-      run: |
-        brew install create-dmg
-        create-dmg \
-          --volname "Algorithm Visualizer" \
-          --window-pos 200 120 \
-          --window-size 800 400 \
-          --icon-size 100 \
-          --app-drop-link 600 185 \
-          "Algorithm-Visualizer-Installer.dmg" \
-          "dist/Algorithm Visualizer.app"
-    
-    - name: Upload macOS DMG
-      uses: actions/upload-artifact@v3
-      with:
-        name: AlgorithmVisualizer-macOS
-        path: Algorithm-Visualizer-Installer.dmg
-        retention-days: 30
-
-  create-release:
-    needs: [build-windows, build-macos]
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
-    
-    steps:
-    - name: Download Windows artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: AlgorithmVisualizer-Windows
-        path: ./windows
-    
-    - name: Download macOS artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: AlgorithmVisualizer-macOS
-        path: ./macos
+        retention-days: 90
     
     - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/v')
       uses: softprops/action-gh-release@v1
       with:
-        files: |
-          ./windows/AlgorithmVisualizer.exe
-          ./macos/Algorithm-Visualizer-Installer.dmg
+        files: dist/AlgorithmVisualizer.exe
         draft: false
         prerelease: false
         generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
