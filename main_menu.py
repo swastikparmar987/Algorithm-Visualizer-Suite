@@ -201,14 +201,50 @@ class AlgorithmVisualizerApp:
         self.clear_frame()
         
         try:
+            # Force update to show loading state
+            self.app.update()
+            
             module = __import__(module_name, fromlist=[class_name])
             visualizer_class = getattr(module, class_name)
             
             self.current_frame = visualizer_class(self.app, self.show_main_menu)
             self.current_frame.pack(fill="both", expand=True)
             
-        except Exception as e:
+            # Successfully loaded, reset loading flag
             self.loading = False
+            
+        except Exception as e:
+            print(f"Error loading visualizer: {e}")
+            import traceback
+            traceback.print_exc()
+            
+            # Reset loading flag on error
+            self.loading = False
+            
+            # Show error message
+            error_frame = ctk.CTkFrame(self.app, fg_color=COLORS['bg_dark'])
+            error_frame.pack(fill="both", expand=True, padx=20, pady=20)
+            
+            error_label = ctk.CTkLabel(
+                error_frame,
+                text=f"❌ Error loading visualizer\n\n{str(e)}\n\nClick below to return to main menu",
+                font=("SF Pro Display", 16),
+                text_color=COLORS['text']
+            )
+            error_label.pack(expand=True)
+            
+            back_btn = ctk.CTkButton(
+                error_frame,
+                text="← Back to Main Menu",
+                command=self.show_main_menu,
+                font=("SF Pro Display", 14, "bold"),
+                fg_color=COLORS['button_primary'],
+                hover_color=COLORS['button_hover'],
+                height=40
+            )
+            back_btn.pack(pady=20)
+            
+            self.current_frame = error_frame
     
     def toggle_theme(self):
         """Toggle between dark and light theme"""
