@@ -21,7 +21,6 @@ a = Analysis(
         ('info_panel.py', '.'),
         ('README.md', '.'),
         ('USER_GUIDE.md', '.'),
-        ('QUICKSTART.md', '.'),
     ],
     hiddenimports=[
         'customtkinter',
