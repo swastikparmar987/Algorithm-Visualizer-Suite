@@ -1,6 +1,14 @@
 import customtkinter as ctk
 from utils import COLORS, FONTS, ThemeManager
 
+# Import all visualizers directly for PyInstaller compatibility
+from sorting_visualizer_embedded import SortingVisualizerFrame
+from searching_visualizer_embedded import SearchingVisualizerFrame
+from graph_visualizer_embedded import GraphVisualizerFrame
+from tree_visualizer_embedded import TreeVisualizerFrame
+from maze_visualizer_embedded import MazeVisualizerFrame
+from data_structures_visualizer_embedded import DataStructuresVisualizerFrame
+
 ctk.set_default_color_theme("green")
 
 class AlgorithmVisualizerApp:
@@ -203,12 +211,25 @@ class AlgorithmVisualizerApp:
     def load_visualizer(self, module_name, class_name):
         self.clear_frame()
         
+        # Map class names to actual classes (for PyInstaller compatibility)
+        visualizer_map = {
+            'SortingVisualizerFrame': SortingVisualizerFrame,
+            'SearchingVisualizerFrame': SearchingVisualizerFrame,
+            'GraphVisualizerFrame': GraphVisualizerFrame,
+            'TreeVisualizerFrame': TreeVisualizerFrame,
+            'MazeVisualizerFrame': MazeVisualizerFrame,
+            'DataStructuresVisualizerFrame': DataStructuresVisualizerFrame,
+        }
+        
         try:
             # Force update to show loading state
             self.app.update()
             
-            module = __import__(module_name, fromlist=[class_name])
-            visualizer_class = getattr(module, class_name)
+            # Get visualizer class from map
+            visualizer_class = visualizer_map.get(class_name)
+            
+            if not visualizer_class:
+                raise ValueError(f"Unknown visualizer: {class_name}")
             
             self.current_frame = visualizer_class(self.app, self.show_main_menu)
             self.current_frame.pack(fill="both", expand=True)
