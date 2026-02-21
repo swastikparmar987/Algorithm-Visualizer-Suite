@@ -1,0 +1,62 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [ main, master ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+    
+    - name: Build executable
+      run: |
+        pyinstaller --clean Algorithm_Visualizer_Windows.spec
+    
+    - name: Test executable exists
+      run: |
+        if (Test-Path "dist/AlgorithmVisualizer.exe") {
+          Write-Host "✅ Build successful!"
+          $size = (Get-Item "dist/AlgorithmVisualizer.exe").Length / 1MB
+          Write-Host "📦 Size: $([math]::Round($size, 2)) MB"
+        } else {
+          Write-Host "❌ Build failed - executable not found"
+          exit 1
+        }
+      shell: pwsh
+    
+    - name: Upload executable
+      uses: actions/upload-artifact@v3
+      with:
+        name: AlgorithmVisualizer-Windows-${{ github.sha }}
+        path: dist/AlgorithmVisualizer.exe
+        retention-days: 30
+    
+    - name: Create Release (on tag)
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/AlgorithmVisualizer.exe
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

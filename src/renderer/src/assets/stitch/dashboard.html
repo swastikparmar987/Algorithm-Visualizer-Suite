@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALGO_V1S | Cyberpunk Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0db9f2",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#101e22",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.25rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(40, 53, 57, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neo-glow {
+            box-shadow: 0 0 15px rgba(13, 185, 242, 0.3);
+        }
+        .lego-button {
+            transition: all 0.1s ease;
+            box-shadow: 0 6px 0 0 rgba(0, 0, 0, 0.3);
+        }
+        .lego-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.3);
+        }
+        .liquid-fill {
+            background: linear-gradient(90deg, #0db9f2 0%, #00f2fe 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .liquid-fill::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            100% { transform: translateX(100%); }
+        }
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid #0db9f2;
+            white-space: nowrap;
+            margin: 0;
+            letter-spacing: -0.015em;
+            animation: typing 3.5s steps(30, end), blink-caret .5s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #0db9f2 }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 selection:bg-primary/30 min-h-screen">
+<!-- Top Navigation Bar (Modified from Components) -->
+<header class="sticky top-0 z-50 glass border-b border-white/5 px-6 py-4 lg:px-20">
+<div class="max-w-[1400px] mx-auto flex items-center justify-between">
+<div class="flex items-center gap-10">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-1.5 rounded-lg shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-background-dark font-bold">terminal</span>
+</div>
+<h2 class="text-xl font-extrabold tracking-tighter text-slate-100">ALGO_V1S</h2>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary font-bold text-sm uppercase tracking-widest" href="#">Dashboard</a>
+<a class="text-slate-400 hover:text-white transition-colors font-semibold text-sm uppercase tracking-widest" href="#">Academy</a>
+<a class="text-slate-400 hover:text-white transition-colors font-semibold text-sm uppercase tracking-widest" href="#">Compiler</a>
+<a class="text-slate-400 hover:text-white transition-colors font-semibold text-sm uppercase tracking-widest" href="#">Global Ops</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-white/5 rounded-xl px-4 py-2 border border-white/10">
+<span class="material-symbols-outlined text-slate-400 text-xl">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 text-slate-200 placeholder:text-slate-500" placeholder="Search Data Structures..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-slate-300">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+<div class="size-10 rounded-xl overflow-hidden border-2 border-primary/50 neo-glow">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="Cyberpunk character avatar profile image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDX9cftgIzKu4Jg84DhisE7RKQNiLBsAXPjjL5JOEs0qIBOw3qBA1WImEzaviVK0SF_uQtcODCmFdBYZ_EzZaIWYoAq0YyixNyqLoxq9EMqrrMiFs8C7wdefvjK_XWDn1zQL8G3jQ3E6wWiTNyg_N6W4zMYeLsjXvXTpZJBaR618-ZC_F_f-HyPOvSAHxnLMelN-GP1UWvaXuFfaSjbOA2jHp_tzoEg2hyNcRVjKnhKpVlMYsmNRqLzhP966xyK8FSgtFW8tg0N3UY"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1400px] mx-auto px-6 py-10 lg:px-20 space-y-12">
+<!-- Hero Section: Stats & Progress -->
+<section class="space-y-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<p class="text-primary font-mono text-sm tracking-[0.2em] font-bold uppercase">System Online // User: Neo</p>
+<div class="inline-block">
+<h1 class="text-4xl md:text-6xl font-black text-white typewriter">Welcome back, Neo 👾</h1>
+</div>
+</div>
+<div class="glass p-4 rounded-2xl flex items-center gap-4 border-orange-500/30">
+<div class="relative">
+<span class="material-symbols-outlined text-orange-500 text-4xl leading-none">local_fire_department</span>
+<div class="absolute inset-0 bg-orange-500 blur-xl opacity-30"></div>
+</div>
+<div>
+<p class="text-xs font-bold text-orange-500/70 uppercase tracking-widest">Current Streak</p>
+<p class="text-2xl font-black text-white font-mono">7 DAYS</p>
+</div>
+</div>
+</div>
+<!-- XP Bar Section -->
+<div class="space-y-4">
+<div class="flex justify-between items-end px-2">
+<div class="space-y-1">
+<p class="text-slate-100 font-bold text-lg">Level 12: Senior Script Kid</p>
+<p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">Next Rank: Cyber Architect</p>
+</div>
+<div class="text-right">
+<p class="text-primary font-mono font-black text-xl">650 / 1000 XP</p>
+</div>
+</div>
+<div class="h-8 w-full glass rounded-2xl p-1.5 neo-glow relative overflow-hidden">
+<div class="h-full rounded-xl liquid-fill" style="width: 65%;"></div>
+</div>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="glass p-6 rounded-2xl border-l-4 border-primary">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Total Solves</p>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-black text-white font-mono">142</span>
+<span class="text-primary font-bold text-sm">+12%</span>
+</div>
+</div>
+<div class="glass p-6 rounded-2xl border-l-4 border-orange-500">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Max Streak</p>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-black text-white font-mono">24</span>
+<span class="text-orange-400 font-bold text-sm">RECORDS</span>
+</div>
+</div>
+<div class="glass p-6 rounded-2xl border-l-4 border-green-400">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Algorithms Mastered</p>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-black text-white font-mono">12</span>
+<span class="text-green-400 font-bold text-sm">+2</span>
+</div>
+</div>
+<div class="glass p-6 rounded-2xl border-l-4 border-purple-500">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1">Global Rank</p>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-black text-white font-mono">TOP 5%</span>
+<span class="text-purple-400 font-bold text-sm">GLOBAL</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Categories Section -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-2xl font-black text-white flex items-center gap-3 uppercase tracking-tighter">
+<span class="w-10 h-1 bg-primary rounded-full"></span>
+                    Algorithm Sectors
+                </h2>
+<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+                    VIEW ALL SECTORS <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Sorting Card -->
+<div class="glass p-8 rounded-3xl relative group hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start mb-10">
+<div class="size-16 rounded-2xl bg-primary/20 flex items-center justify-center text-primary border border-primary/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">sort</span>
+</div>
+<span class="px-3 py-1 rounded-lg bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">In Progress</span>
+</div>
+<h3 class="text-2xl font-black text-white mb-2">Sorting Protocols</h3>
+<p class="text-slate-400 text-sm mb-6">Master Quicksort, Mergesort, and Heapsort visualization mechanics.</p>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold">
+<span class="text-slate-500 uppercase">Synchronizing</span>
+<span class="text-primary">82%</span>
+</div>
+<div class="h-2 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 82%;"></div>
+</div>
+</div>
+</div>
+<!-- Searching Card -->
+<div class="glass p-8 rounded-3xl relative group hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start mb-10">
+<div class="size-16 rounded-2xl bg-cyan-400/20 flex items-center justify-center text-cyan-400 border border-cyan-400/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">travel_explore</span>
+</div>
+<span class="px-3 py-1 rounded-lg bg-cyan-400/10 text-cyan-400 text-[10px] font-black uppercase tracking-widest border border-cyan-400/20">In Progress</span>
+</div>
+<h3 class="text-2xl font-black text-white mb-2">Search Heuristics</h3>
+<p class="text-slate-400 text-sm mb-6">Binary Search trees, BFS, and DFS traversal patterns.</p>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold">
+<span class="text-slate-500 uppercase">Indexing</span>
+<span class="text-cyan-400">45%</span>
+</div>
+<div class="h-2 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-cyan-400 rounded-full" style="width: 45%;"></div>
+</div>
+</div>
+</div>
+<!-- Graph Card -->
+<div class="glass p-8 rounded-3xl relative group hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start mb-10">
+<div class="size-16 rounded-2xl bg-purple-500/20 flex items-center justify-center text-purple-400 border border-purple-500/30 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">hub</span>
+</div>
+<span class="px-3 py-1 rounded-lg bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase tracking-widest border border-purple-500/20">New Sector</span>
+</div>
+<h3 class="text-2xl font-black text-white mb-2">Graph Neural Nets</h3>
+<p class="text-slate-400 text-sm mb-6">Dijkstra, A*, and Bellman-Ford shortest path algorithms.</p>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-bold">
+<span class="text-slate-500 uppercase">Connecting</span>
+<span class="text-purple-400">12%</span>
+</div>
+<div class="h-2 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-purple-500 rounded-full" style="width: 12%;"></div>
+</div>
+</div>
+</div>
+<!-- Locked Phase 5 Card -->
+<div class="glass p-8 rounded-3xl relative border-white/5 bg-white/[0.02] grayscale opacity-60 overflow-hidden group">
+<!-- Shimmer overlay -->
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+<div class="flex justify-between items-start mb-10">
+<div class="size-16 rounded-2xl bg-white/10 flex items-center justify-center text-slate-300 border border-white/10">
+<span class="material-symbols-outlined text-4xl">psychology</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-white text-[10px] font-black uppercase tracking-widest border border-white/20">
+<span class="material-symbols-outlined text-[14px]">lock</span> LOCKED
+                        </div>
+</div>
+<h3 class="text-2xl font-black text-slate-300 mb-2">Dynamic Programming</h3>
+<p class="text-slate-500 text-sm mb-6">Advanced optimization techniques and recursive memoization.</p>
+<div class="h-2 bg-white/5 rounded-full"></div>
+</div>
+<!-- Locked Phase 5 Card -->
+<div class="glass p-8 rounded-3xl relative border-white/5 bg-white/[0.02] grayscale opacity-60 overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+<div class="flex justify-between items-start mb-10">
+<div class="size-16 rounded-2xl bg-white/10 flex items-center justify-center text-slate-300 border border-white/10">
+<span class="material-symbols-outlined text-4xl">account_tree</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-white text-[10px] font-black uppercase tracking-widest border border-white/20">
+<span class="material-symbols-outlined text-[14px]">lock</span> LOCKED
+                        </div>
+</div>
+<h3 class="text-2xl font-black text-slate-300 mb-2">Bit Manipulation</h3>
+<p class="text-slate-500 text-sm mb-6">Low-level logic operations and memory-efficient data structures.</p>
+<div class="h-2 bg-white/5 rounded-full"></div>
+</div>
+<!-- Locked Phase 5 Card -->
+<div class="glass p-8 rounded-3xl relative border-white/5 bg-white/[0.02] grayscale opacity-60 overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+<div class="flex justify-between items-start mb-10">
+<div class="size-16 rounded-2xl bg-white/10 flex items-center justify-center text-slate-300 border border-white/10">
+<span class="material-symbols-outlined text-4xl">join_inner</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 text-white text-[10px] font-black uppercase tracking-widest border border-white/20">
+<span class="material-symbols-outlined text-[14px]">lock</span> LOCKED
+                        </div>
+</div>
+<h3 class="text-2xl font-black text-slate-300 mb-2">Complexity Theory</h3>
+<p class="text-slate-500 text-sm mb-6">Deep dive into Big O, NP-Completeness, and mathematical modeling.</p>
+<div class="h-2 bg-white/5 rounded-full"></div>
+</div>
+</div>
+</section>
+<!-- Tools Section -->
+<section class="space-y-6">
+<h2 class="text-2xl font-black text-white flex items-center gap-3 uppercase tracking-tighter">
+<span class="w-10 h-1 bg-primary rounded-full"></span>
+                Engagement Hub
+            </h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Algo Battle -->
+<div class="p-1 rounded-3xl bg-gradient-to-br from-indigo-600 via-blue-600 to-primary shadow-2xl shadow-indigo-500/20">
+<div class="glass h-full p-8 rounded-[1.3rem] flex flex-col items-start bg-slate-900/40">
+<div class="bg-indigo-500/20 text-indigo-300 p-3 rounded-2xl mb-6">
+<span class="material-symbols-outlined text-4xl">swords</span>
+</div>
+<h3 class="text-2xl font-black text-white mb-3">Algo Battle</h3>
+<p class="text-indigo-100/70 text-sm mb-8">PVP algorithm optimization matches. Out-code your opponents in real-time.</p>
+<button class="mt-auto w-full py-4 bg-indigo-500 hover:bg-indigo-400 text-white font-black rounded-2xl lego-button uppercase tracking-widest text-sm flex items-center justify-center gap-2">
+                            Enter Arena <span class="material-symbols-outlined">stadium</span>
+</button>
+</div>
+</div>
+<!-- Daily Challenges -->
+<div class="p-1 rounded-3xl bg-gradient-to-br from-orange-600 via-amber-500 to-yellow-400 shadow-2xl shadow-orange-500/20">
+<div class="glass h-full p-8 rounded-[1.3rem] flex flex-col items-start bg-slate-900/40">
+<div class="bg-amber-500/20 text-amber-300 p-3 rounded-2xl mb-6">
+<span class="material-symbols-outlined text-4xl">stars</span>
+</div>
+<h3 class="text-2xl font-black text-white mb-3">Elite Challenges</h3>
+<p class="text-amber-100/70 text-sm mb-8">Curated problems with exclusive vanity rewards and XP boosters.</p>
+<button class="mt-auto w-full py-4 bg-amber-500 hover:bg-amber-400 text-background-dark font-black rounded-2xl lego-button uppercase tracking-widest text-sm flex items-center justify-center gap-2">
+                            Accept Mission <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+</div>
+<!-- Theoretical Quiz -->
+<div class="p-1 rounded-3xl bg-gradient-to-br from-emerald-600 via-teal-500 to-cyan-400 shadow-2xl shadow-emerald-500/20">
+<div class="glass h-full p-8 rounded-[1.3rem] flex flex-col items-start bg-slate-900/40">
+<div class="bg-emerald-500/20 text-emerald-300 p-3 rounded-2xl mb-6">
+<span class="material-symbols-outlined text-4xl">quiz</span>
+</div>
+<h3 class="text-2xl font-black text-white mb-3">Theory Quiz</h3>
+<p class="text-emerald-100/70 text-sm mb-8">Reinforce your mental models with flash-fire technical questions.</p>
+<button class="mt-auto w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-white font-black rounded-2xl lego-button uppercase tracking-widest text-sm flex items-center justify-center gap-2">
+                            Start Quiz <span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="max-w-[1400px] mx-auto px-6 py-12 lg:px-20 border-t border-white/5">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-4">
+<div class="size-8 bg-slate-800 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-500 text-xl">code</span>
+</div>
+<p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Core Version: 1.2.4-stable // Electron Build</p>
+</div>
+<div class="flex gap-8">
+<a class="text-slate-500 hover:text-primary transition-colors text-xs font-bold uppercase tracking-widest" href="#">Changelog</a>
+<a class="text-slate-500 hover:text-primary transition-colors text-xs font-bold uppercase tracking-widest" href="#">Support</a>
+<a class="text-slate-500 hover:text-primary transition-colors text-xs font-bold uppercase tracking-widest" href="#">Privacy</a>
+</div>
+<p class="text-slate-600 text-[10px] font-mono">© 2024 ALGO_V1S. ALL RIGHTS RESERVED.</p>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Quick Sort Visualizer - Cyberpunk Edition</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#7b25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#0b0812",
+                        "accent-cyan": "#00f3ff",
+                        "accent-orange": "#ff8c00",
+                        "accent-green": "#39ff14",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(47, 40, 57, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .lego-button {
+            box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.4);
+            transition: all 0.1s ease;
+        }
+        .lego-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.4);
+        }
+        .cyber-grid {
+            background-image: linear-gradient(rgba(123, 37, 244, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(123, 37, 244, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .bar-gradient {
+            background: linear-gradient(180deg, #00f3ff 0%, #7b25f4 100%);
+        }
+        .pivot-glow {
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.6);
+        }
+        .pulse-cyan {
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 overflow-hidden h-screen flex flex-col">
+<!-- Header -->
+<header class="h-16 flex items-center justify-between px-6 border-b border-white/10 glass-panel z-50">
+<div class="flex items-center gap-6">
+<button class="flex items-center justify-center size-10 rounded-lg hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<nav class="flex items-center gap-2 text-sm font-medium tracking-wide">
+<span class="text-slate-400">Algorithms</span>
+<span class="material-symbols-outlined text-xs text-slate-600">chevron_right</span>
+<span class="text-slate-400">Sorting</span>
+<span class="material-symbols-outlined text-xs text-slate-600">chevron_right</span>
+<span class="text-primary font-bold">Quick Sort</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-background-dark/50 border border-white/10 rounded-full p-1">
+<button class="px-4 py-1.5 rounded-full text-xs font-bold bg-primary text-white">SYSTEM</button>
+<button class="px-4 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-colors">NEON</button>
+</div>
+<div class="size-10 rounded-full border-2 border-primary/50 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile avatar cyberpunk style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjsNo5CESs0smxETjnvCB7vjytNLQ-iRN8hHOhXZuLvSO96vCugmdsWgXti0DVQ9bjkQnCnaBNgozvP28jIjhCPKsl9DPy8h7rdMrFu1eFxx3OuorEauhCA-Jux80y_KmqK5GDhi7Kzl4nw4hwi-u3hTeD4DtLWdIjeziIu9sp1mZH-faZhvOMbDqrZCtVjsQSgqPhb9u7YsG2KP8mwHNTEOVqYdxk7asEzkRl2jvYOoU9HC1zlH4I6uUCmILM7MVftxzGIN1k8as"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-80 flex flex-col border-r border-white/10 glass-panel p-6 gap-8 overflow-y-auto">
+<!-- Controls Group -->
+<div class="flex flex-col gap-6">
+<h3 class="text-xs font-black uppercase tracking-widest text-primary">Parameters</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-sm font-bold text-slate-300">Speed</label>
+<span class="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded">5.0x</span>
+</div>
+<input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="text-sm font-bold text-slate-300">Array Size</label>
+<span class="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded">64</span>
+</div>
+<input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="grid grid-cols-2 gap-3">
+<button class="lego-button col-span-2 bg-primary hover:bg-primary/90 text-white font-black py-4 rounded-lg flex items-center justify-center gap-2 uppercase tracking-tighter">
+<span class="material-symbols-outlined">play_arrow</span>
+                    Execute Array
+                </button>
+<button class="lego-button bg-yellow-500/20 border border-yellow-500/50 text-yellow-500 font-bold py-3 rounded-lg flex items-center justify-center gap-2 uppercase text-xs">
+<span class="material-symbols-outlined text-sm">pause</span>
+                    Pause
+                </button>
+<button class="lego-button bg-red-500/20 border border-red-500/50 text-red-500 font-bold py-3 rounded-lg flex items-center justify-center gap-2 uppercase text-xs">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                    Reset
+                </button>
+</div>
+<!-- Stats Panel -->
+<div class="flex flex-col gap-4 mt-auto">
+<h3 class="text-xs font-black uppercase tracking-widest text-primary">Live Metrics</h3>
+<div class="grid grid-cols-1 gap-4">
+<div class="glass-panel p-4 rounded-xl border-l-4 border-accent-cyan">
+<p class="text-[10px] uppercase font-bold text-slate-400">Steps Taken</p>
+<p class="text-3xl font-black text-white tabular-nums">0,842</p>
+</div>
+<div class="glass-panel p-4 rounded-xl border-l-4 border-primary">
+<p class="text-[10px] uppercase font-bold text-slate-400">Comparisons</p>
+<p class="text-3xl font-black text-white tabular-nums">2,104</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Visualizer Area -->
+<main class="flex-1 relative cyber-grid p-12 flex items-end justify-center gap-1 overflow-hidden">
+<!-- Pivot Marker (Floating indicator) -->
+<div class="absolute top-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-accent-orange text-3xl animate-bounce">stat_0</span>
+<span class="text-[10px] font-black bg-accent-orange text-black px-2 py-0.5 rounded uppercase">Current Pivot</span>
+</div>
+<!-- Sorting Bars -->
+<div class="h-12 w-6 rounded-t-sm bg-white/5"></div>
+<div class="h-24 w-6 rounded-t-sm bg-white/5"></div>
+<div class="h-32 w-6 rounded-t-sm bg-white/5"></div>
+<div class="h-16 w-6 rounded-t-sm bar-gradient opacity-60"></div>
+<div class="h-48 w-6 rounded-t-sm bar-gradient opacity-60"></div>
+<div class="h-40 w-6 rounded-t-sm bar-gradient pulse-cyan border-2 border-accent-cyan ring-4 ring-accent-cyan/20"></div> <!-- Active 1 -->
+<div class="h-56 w-6 rounded-t-sm bar-gradient opacity-60"></div>
+<div class="h-72 w-6 rounded-t-sm bg-accent-orange pivot-glow relative ring-4 ring-accent-orange/20">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2">
+<span class="material-symbols-outlined text-accent-orange text-sm">star</span>
+</div>
+</div> <!-- Pivot -->
+<div class="h-28 w-6 rounded-t-sm bar-gradient opacity-60"></div>
+<div class="h-40 w-6 rounded-t-sm bar-gradient pulse-cyan border-2 border-accent-cyan ring-4 ring-accent-cyan/20"></div> <!-- Active 2 -->
+<div class="h-64 w-6 rounded-t-sm bar-gradient opacity-60"></div>
+<div class="h-52 w-6 rounded-t-sm bar-gradient opacity-60"></div>
+<div class="h-36 w-6 rounded-t-sm bar-gradient opacity-60"></div>
+<div class="h-80 w-6 rounded-t-sm bar-gradient opacity-60"></div>
+<div class="h-20 w-6 rounded-t-sm bar-gradient opacity-60"></div>
+<div class="h-44 w-6 rounded-t-sm bg-white/5"></div>
+<div class="h-12 w-6 rounded-t-sm bg-white/5"></div>
+</main>
+</div>
+<!-- Bottom Panel -->
+<footer class="h-64 glass-panel border-t border-white/10 flex overflow-hidden">
+<!-- Pseudocode -->
+<div class="w-1/2 border-r border-white/10 p-6 overflow-y-auto bg-black/20">
+<h4 class="text-[10px] font-black uppercase text-slate-500 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">code</span>
+                QuickSort Algorithm
+            </h4>
+<div class="font-mono text-sm space-y-1 text-slate-400">
+<div class="flex gap-4 px-2 py-1 rounded">
+<span class="w-4 text-slate-600">1</span>
+<span>quickSort(arr, low, high) {</span>
+</div>
+<div class="flex gap-4 px-2 py-1 rounded">
+<span class="w-4 text-slate-600">2</span>
+<span class="pl-4">if (low &lt; high) {</span>
+</div>
+<div class="flex gap-4 px-2 py-1 rounded-md bg-accent-green/10 border border-accent-green/30 text-accent-green">
+<span class="w-4 opacity-50">3</span>
+<span class="pl-8">pivotIndex = partition(arr, low, high);</span>
+</div>
+<div class="flex gap-4 px-2 py-1 rounded">
+<span class="w-4 text-slate-600">4</span>
+<span class="pl-8">quickSort(arr, low, pivotIndex - 1);</span>
+</div>
+<div class="flex gap-4 px-2 py-1 rounded">
+<span class="w-4 text-slate-600">5</span>
+<span class="pl-8">quickSort(arr, pivotIndex + 1, high);</span>
+</div>
+<div class="flex gap-4 px-2 py-1 rounded">
+<span class="w-4 text-slate-600">6</span>
+<span class="pl-4">}</span>
+</div>
+<div class="flex gap-4 px-2 py-1 rounded">
+<span class="w-4 text-slate-600">7</span>
+<span>}</span>
+</div>
+</div>
+</div>
+<!-- Description -->
+<div class="w-1/2 p-8 flex flex-col justify-center gap-4">
+<div class="flex items-center gap-3">
+<div class="size-2 rounded-full bg-accent-green animate-pulse"></div>
+<h4 class="text-lg font-bold text-white uppercase tracking-tight">Step Logic</h4>
+</div>
+<p class="text-slate-400 text-sm leading-relaxed max-w-lg">
+                Partitioning around <span class="text-accent-orange font-bold">Pivot (Value: 72)</span>. 
+                Currently comparing elements at <span class="text-accent-cyan font-bold">index 5</span> and <span class="text-accent-cyan font-bold">index 9</span>. 
+                If <span class="text-slate-200">arr[i] &lt; pivot</span>, the element will be swapped to the left side of the partition.
+            </p>
+<div class="mt-4 flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-sm bg-accent-orange"></div>
+<span class="text-[10px] uppercase font-bold text-slate-500">Pivot</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-sm bg-accent-cyan"></div>
+<span class="text-[10px] uppercase font-bold text-slate-500">Comparing</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-sm bg-primary"></div>
+<span class="text-[10px] uppercase font-bold text-slate-500">Sorted</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

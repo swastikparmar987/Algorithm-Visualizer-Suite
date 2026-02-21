@@ -1,0 +1,62 @@
+[
+    {
+        "id": "understanding-big-o",
+        "title": "Understanding Big-O Notation",
+        "type": "Article",
+        "category": "Fundamentals",
+        "thumbnail": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=800",
+        "readTime": "5 min",
+        "author": "System Architect",
+        "content": "# Big-O Notation Demystified\n\nBig-O notation is the language we use for talking about how long an algorithm takes to run. It's how we compare the efficiency of different approaches to a problem.\n\n## Why Does it Matter?\nImagine you have a list of 10 items. A poorly designed algorithm might take 100 milliseconds to process it. No big deal. But what if that list grows to 10,000 items? If your algorithm runs in **O(n²)** time, that 100ms just turned into hours of processing time.\n\n### Common Complexities:\n*   **O(1) - Constant Time:** The holy grail. Finding an item in a Hash Map.\n*   **O(log n) - Logarithmic Time:** Extremely fast even for massive datasets. Binary Search.\n*   **O(n) - Linear Time:** Performance scales directly with input size. Scanning an array.\n*   **O(n log n) - Linearithmic Time:** The standard for efficient sorting (Merge Sort, Quick Sort).\n*   **O(n²) - Quadratic Time:** The danger zone for large inputs (Bubble Sort, nested loops).\n\nAlways optimize for time, but don't forget about **Space Complexity** (memory usage)!"
+    },
+    {
+        "id": "graphs-bfs-dfs",
+        "title": "Graph Traversal: BFS vs DFS",
+        "type": "Video",
+        "category": "Algorithms",
+        "thumbnail": "https://images.unsplash.com/photo-1544256718-3bcf237f3974?auto=format&fit=crop&q=80&w=800",
+        "readTime": "12 min",
+        "author": "AlgoBot",
+        "videoUrl": "https://www.youtube-nocookie.com/embed/TIbUeeksXcI"
+    },
+    {
+        "id": "dynamic-programming-patterns",
+        "title": "Dynamic Programming Patterns",
+        "type": "Video",
+        "category": "Algorithms",
+        "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800",
+        "readTime": "24 min",
+        "author": "NeetCode",
+        "videoUrl": "https://www.youtube-nocookie.com/embed/Hdr64lKQ3e4"
+    },
+    {
+        "id": "system-design-load-balancers",
+        "title": "System Design: Load Balancers",
+        "type": "Article",
+        "category": "System Design",
+        "thumbnail": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800",
+        "readTime": "8 min",
+        "author": "Cloud Engineer",
+        "content": "# Scaling with Load Balancers\n\nAs your application grows, a single server won't be enough to handle the traffic. This is where Load Balancers come in.\n\n## What is a Load Balancer?\nA load balancer acts as the \"traffic cop\" sitting in front of your servers and routing client requests across all servers capable of fulfilling those requests in a manner that maximizes speed and capacity utilization and ensures that no one server is overworked.\n\n## Routing Algorithms\n1.  **Round Robin:** Requests are distributed across the group of servers sequentially.\n2.  **Least Connections:** A new request is sent to the server with the fewest current connections to clients.\n3.  **IP Hash:** The IP address of the client is used to determine which server receives the request.\n\n## Single Point of Failure?\nTo prevent the load balancer itself from becoming a single point of failure (SPOF), you typically deploy them in an active-passive or active-active configuration."
+    },
+    {
+        "id": "two-pointers-technique",
+        "title": "Mastering the Two Pointers Technique",
+        "type": "Article",
+        "category": "Data Structures",
+        "thumbnail": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800",
+        "readTime": "6 min",
+        "author": "Code Ninja",
+        "content": "# The Power of Two Pointers\n\nThe two-pointer technique is a highly effective strategy for solving array and string problems, especially when the data is sorted. It helps reduce nested loops, bringing time complexity down from **O(n²)** to **O(n)**.\n\n## Collision Course (Opposite Ends)\nThe most common setup. One pointer starts at the beginning (`left = 0`) and the other at the end (`right = arr.length - 1`).\n\n**Classic Problem: Two Sum II (Sorted Array)**\nInstead of a nested loop, you check the sum of `arr[left] + arr[right]`:\n*   If it's too large, decrement `right`.\n*   If it's too small, increment `left`.\n\n## The Sliding Window (Same Direction)\nUsed to track a sequence of continuous elements. Useful for finding the longest/shortest subarray meeting a condition.\n\n## The Fast & Slow Pointer (Tortoise and Hare)\nOften used in Linked Lists to detect cycles or find the middle element. The `fast` pointer moves two steps while the `slow` pointer moves one."
+    },
+    {
+        "id": "sliding-window-visualized",
+        "title": "Sliding Window Pattern Visualized",
+        "type": "Video",
+        "category": "Algorithms",
+        "thumbnail": "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?auto=format&fit=crop&q=80&w=800",
+        "readTime": "15 min",
+        "author": "Algo Expert",
+        "videoUrl": "https://www.youtube-nocookie.com/embed/MK-NZ4OmcN8"
+    }
+]

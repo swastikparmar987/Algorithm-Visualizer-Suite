@@ -1,0 +1,40 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+*.egg-info/
+
+# Build artifacts
+build/
+dist/
+*.spec.bak
+
+# macOS
+.DS_Store
+*.dmg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Screenshots (optional - comment out if you want to include them)
+# *.png
+
+# Environment variables
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+node_modules
