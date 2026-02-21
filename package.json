@@ -22,7 +22,7 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "SwastikParmar",
+        "owner": "swastikparmar987",
         "repo": "Algorithm-Visualizer-Suite"
       }
     ],
