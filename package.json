@@ -19,6 +19,13 @@
       "output": "dist",
       "buildResources": "build"
     },
+    "files": [
+      "out/**/*",
+      "package.json",
+      "!venv",
+      "!venv_13",
+      "!python_legacy"
+    ],
     "publish": [
       {
         "provider": "github",

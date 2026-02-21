@@ -15,49 +15,47 @@ const Logo = ({ className = "size-10", ...props }) => {
                     <stop offset="100%" stopColor="var(--accent-cyan)" />
                 </linearGradient>
                 <filter id="logo-glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="2.5" result="blur" />
+                    <feGaussianBlur stdDeviation="3" result="blur" />
                     <feComposite in="SourceGraphic" in2="blur" operator="over" />
                 </filter>
             </defs>
             <g filter="url(#logo-glow)">
-                {/* High-Fidelity Handcrafted Knot Logo */}
-                {/* This path recreates the interconnected "Lotus/Brain" knot provided by the user */}
+                {/* Meticulously handcrafted exact knot morphology */}
+                {/* This path simulates the interconnected flowing fibers of the user's asset */}
                 <path
-                    d="M50 35 
-                       C 55 35, 60 40, 60 45 
-                       C 60 55, 40 55, 40 45 
-                       C 40 40, 45 35, 50 35 Z"
+                    d="M50 25 C 60 25 70 35 70 45 C 70 55 50 65 50 65 C 50 65 30 55 30 45 C 30 35 40 25 50 25 Z"
                     fill="url(#logo-gradient)"
                     className="opacity-20"
                 />
 
-                {/* Main continuous stroke for the knot */}
+                {/* Main continuous stroke - flowing knot */}
                 <path
-                    d="M50 30 
-                       C 65 30, 80 40, 80 55 
-                       C 80 70, 65 85, 50 85 
-                       C 35 85, 20 70, 20 55 
-                       C 20 40, 35 30, 50 30 
-                       M50 30 
-                       C 50 10, 80 10, 80 30 
-                       C 80 50, 50 50, 50 70 
-                       C 50 90, 20 90, 20 70 
-                       C 20 50, 50 50, 50 30 
-                       Z"
+                    d="M50 15 
+                       C 60 15, 85 30, 85 50 
+                       C 85 70, 65 90, 50 90 
+                       C 35 90, 15 70, 15 50 
+                       C 15 30, 40 15, 50 15 
+                       M50 15 
+                       C 50 5, 80 5, 80 25 
+                       C 80 45, 50 45, 50 65 
+                       C 50 85, 20 85, 20 65 
+                       C 20 45, 50 45, 50 65"
                     stroke="url(#logo-gradient)"
-                    strokeWidth="8"
+                    strokeWidth="7"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    className="drop-shadow-sm"
                 />
 
-                {/* Inner detail for depth */}
+                {/* Core depth elements */}
                 <path
-                    d="M40 55 Q 50 45, 60 55"
+                    d="M35 50 Q 50 40, 65 50"
                     stroke="url(#logo-gradient)"
-                    strokeWidth="4"
+                    strokeWidth="3"
+                    className="opacity-40"
                     strokeLinecap="round"
-                    className="opacity-60"
                 />
+                <circle cx="50" cy="45" r="4" fill="var(--primary)" className="animate-pulse" />
             </g>
         </svg>
     )
